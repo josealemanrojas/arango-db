@@ -1,0 +1,96 @@
+version: '3'
+
+services:
+  arangodb-agent:
+    image: arangodb/arangodb
+    container_name: arangodb-agent-vulcan
+    hostname: arangodb-agent.vulcan.local-dev
+    restart: unless-stopped
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.endpoint tcp://0.0.0.0:8529 --server.authentication=false --agency.my-address tcp://host.docker.internal:8001 --agency.endpoint tcp://host.docker.internal:8001 --agency.activate true --agency.size 1 --agency.supervision true --database.directory /var/lib/arangodb3/agency1
+    ports:
+      - 8001:8529
+    volumes:
+      - /tmp/arangodb/agent:/var/lib/arangodb3
+
+  arangodb-coordinator1:
+    image: arangodb/arangodb
+    container_name: arangodb-coordinator1-vulcan
+    hostname: arangodb-coordinator1.vulcan.local-dev
+    restart: unless-stopped
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:8529 --cluster.my-address tcp://host.docker.internal:7001 --cluster.my-local-info coord1  --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://host.docker.internal:8001   --database.directory /var/lib/arangodb3/coordinator1
+    ports:
+      - 7001:8529
+    depends_on:
+      - arangodb-agent
+    volumes:
+      - /tmp/arangodb/coordinator1:/var/lib/arangodb3
+
+  arangodb-coordinator2:
+    image: arangodb/arangodb
+    container_name: arangodb-coordinator2-vulcan
+    hostname: arangodb-coordinator2.vulcan.local-dev
+    restart: unless-stopped
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:8529 --cluster.my-address tcp://host.docker.internal:7002 --cluster.my-local-info coord2  --cluster.my-role COORDINATOR --cluster.agency-endpoint tcp://host.docker.internal:8001   --database.directory /var/lib/arangodb3/coordinator2
+    ports:
+      - 7002:8529
+    depends_on:
+      - arangodb-agent
+    volumes:
+      - /tmp/arangodb/coordinator2:/var/lib/arangodb3
+
+  arangodb-db1:
+    image: arangodb/arangodb
+    container_name: arangodb-db1-vulcan
+    hostname: arangodb-db1.vulcan.local-dev
+    restart: unless-stopped
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:8529 --cluster.my-address tcp://host.docker.internal:6001 --cluster.my-local-info db1 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://host.docker.internal:8001  --database.directory /var/lib/arangodb3/primary1
+    ports:
+      - 6001:8529
+    depends_on:
+      - arangodb-agent
+    volumes:
+      - /tmp/arangodb/db1:/var/lib/arangodb3
+
+  arangodb-db2:
+    image: arangodb/arangodb
+    container_name: arangodb-db2-vulcan
+    hostname: arangodb-db2.vulcan.local-dev
+    restart: unless-stopped
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:8529 --cluster.my-address tcp://host.docker.internal:6002 --cluster.my-local-info db2 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://host.docker.internal:8001  --database.directory /var/lib/arangodb3/primary1
+    ports:
+      - 6002:8529
+    depends_on:
+      - arangodb-agent
+    volumes:
+      - /tmp/arangodb/db2:/var/lib/arangodb3
+
+  arangodb-db3:
+    image: arangodb/arangodb
+    restart: unless-stopped
+    container_name: arangodb-db3-vulcan
+    hostname: arangodb-db3.vulcan.local-dev
+    environment:
+      - ARANGO_NO_AUTH=1
+      - ARANGO_STORAGE_ENGINE=rocksdb
+    command: arangod --server.authentication=false --server.endpoint tcp://0.0.0.0:8529 --cluster.my-address tcp://host.docker.internal:6003 --cluster.my-local-info db3 --cluster.my-role PRIMARY --cluster.agency-endpoint tcp://host.docker.internal:8001  --database.directory /var/lib/arangodb3/primary1
+    ports:
+      - 6003:8529
+    depends_on:
+      - arangodb-agent
+    volumes:
+      - /tmp/arangodb/db3:/var/lib/arangodb3
