@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -28,7 +32,7 @@ public class ArangoDbTest {
 
     ArangoCollection collection;
 
-    String key;
+    Set<String> keys = new LinkedHashSet<>();
 
     @BeforeEach
     void setup(){
@@ -38,7 +42,7 @@ public class ArangoDbTest {
 
     @AfterEach
     void tearDown(){
-        collection.deleteDocument(key);
+        collection.deleteDocuments(keys);
     }
 
 
@@ -54,7 +58,7 @@ public class ArangoDbTest {
 
         DocumentCreateEntity<Identifiable> identifiableDocumentEntity =
                 collection.insertDocument(article, new DocumentCreateOptions().returnNew(true), Identifiable.class);
-        key = identifiableDocumentEntity.getKey();
+        keys.add(identifiableDocumentEntity.getKey());
 
         log.info(identifiableDocumentEntity.getNew().toString());
 
