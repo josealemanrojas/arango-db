@@ -4,6 +4,9 @@ import com.arangodb.ArangoDB;
 import com.arangodb.entity.LoadBalancingStrategy;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
+import com.arangodb.springframework.core.ArangoOperations;
+import com.arangodb.springframework.core.template.ArangoTemplate;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -24,5 +27,11 @@ public class ArangoDbConfiguration implements ArangoConfiguration {
     @Override
     public String database() {
         return "baeldung-database";
+    }
+
+    @Bean
+    ArangoTemplate arangoTemplate(ArangoOperations arangoTemplate) {
+        return new ArangoTemplate(arangoTemplate.driver(), "baeldung-database",
+                arangoTemplate.getConverter(), arangoTemplate.getResolverFactory());
     }
 }

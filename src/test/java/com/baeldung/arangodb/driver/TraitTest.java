@@ -1,4 +1,4 @@
-package com.baeldung.arangodb;
+package com.baeldung.arangodb.driver;
 
 import com.arangodb.ArangoCollection;
 import com.arangodb.ArangoDatabase;
@@ -15,15 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 @SpringBootTest
 @Slf4j
-public class ArangoDbTest {
+public class TraitTest {
 
     @Autowired
     ArangoTemplate arangoTemplate;
@@ -37,7 +35,7 @@ public class ArangoDbTest {
     @BeforeEach
     void setup(){
         db = arangoTemplate.driver().db("baeldung-database");
-        collection = db.collection("articles");
+        collection = db.collection("article");
     }
 
     @AfterEach
@@ -49,7 +47,7 @@ public class ArangoDbTest {
     @Test
     void testTraits(){
 
-        ArangoCollection collection = db.collection("articles");
+        ArangoCollection collection = db.collection("article");
 
         Article article = Article.builder()
                 .name("name")
@@ -58,6 +56,7 @@ public class ArangoDbTest {
 
         DocumentCreateEntity<Identifiable> identifiableDocumentEntity =
                 collection.insertDocument(article, new DocumentCreateOptions().returnNew(true), Identifiable.class);
+
         keys.add(identifiableDocumentEntity.getKey());
 
         log.info(identifiableDocumentEntity.getNew().toString());

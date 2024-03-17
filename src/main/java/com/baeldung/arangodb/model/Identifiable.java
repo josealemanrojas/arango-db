@@ -8,7 +8,5 @@ public interface Identifiable {
 
     String getId();
 
-    String getRev();
-
     String toString();
 }
