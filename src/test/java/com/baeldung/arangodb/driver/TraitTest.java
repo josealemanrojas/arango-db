@@ -6,7 +6,7 @@ import com.arangodb.entity.DocumentCreateEntity;
 import com.arangodb.model.DocumentCreateOptions;
 import com.arangodb.springframework.core.template.ArangoTemplate;
 import com.baeldung.arangodb.model.Article;
-import com.baeldung.arangodb.model.Identifiable;
+import com.baeldung.arangodb.model.Auditable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +54,8 @@ public class TraitTest {
                 .author("Jose Aleman")
                 .build();
 
-        DocumentCreateEntity<Identifiable> identifiableDocumentEntity =
-                collection.insertDocument(article, new DocumentCreateOptions().returnNew(true), Identifiable.class);
+        DocumentCreateEntity<Auditable> identifiableDocumentEntity =
+                collection.insertDocument(article, new DocumentCreateOptions().returnNew(true), Auditable.class);
 
         keys.add(identifiableDocumentEntity.getKey());
 

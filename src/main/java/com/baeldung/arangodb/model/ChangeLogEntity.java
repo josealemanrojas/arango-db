@@ -1,25 +1,24 @@
 package com.baeldung.arangodb.model;
 
-import com.arangodb.springframework.annotation.Relations;
+import com.arangodb.springframework.annotation.ArangoId;
+import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Rev;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
 import org.springframework.data.annotation.Id;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
 
-@Document("article")
+@Document("change_log")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ArticleEntity implements Auditable {
+public class ChangeLogEntity implements Auditable{
 
     @Id // db document field: _key
     private String key;
@@ -30,9 +29,7 @@ public class ArticleEntity implements Auditable {
     @Rev
     private String rev;
 
-    private String name;
-    private String author;
+    LocalDateTime createdDate;
 
-    @Relations(edges = Relation.class, lazy = true)
-    private Collection<Auditable> relations;
+    String note;
 }

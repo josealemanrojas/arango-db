@@ -1,26 +1,22 @@
 package com.baeldung.arangodb.model;
 
-import com.arangodb.springframework.annotation.Relations;
+import com.arangodb.springframework.annotation.ArangoId;
+import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Rev;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
 import org.springframework.data.annotation.Id;
 
-import java.util.Collection;
-
-@Document("article")
+@Document("follower")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ArticleEntity implements Auditable {
-
+public class FollowerEntity implements Auditable{
     @Id // db document field: _key
     private String key;
 
@@ -30,9 +26,5 @@ public class ArticleEntity implements Auditable {
     @Rev
     private String rev;
 
-    private String name;
-    private String author;
-
-    @Relations(edges = Relation.class, lazy = true)
-    private Collection<Auditable> relations;
+    String fullname;
 }

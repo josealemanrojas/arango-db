@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Article extends DocumentEntity implements Identifiable {
+public class Article extends DocumentEntity implements Auditable {
 
     private String rev;
     private String name;

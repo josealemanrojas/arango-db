@@ -1,8 +1,8 @@
 package com.baeldung.arangodb.model;
 
-public interface Identifiable {
+public interface Auditable {
 
-    String getName();
+    String getRev();
 
     String getKey();
 
