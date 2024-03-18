@@ -33,6 +33,6 @@ public class ArticleEntity implements Auditable {
     private String name;
     private String author;
 
-    @Relations(edges = Relation.class, lazy = true)
+    @Relations(edges = {RelationCL.class, RelationF.class})
     private Collection<Auditable> relations;
 }

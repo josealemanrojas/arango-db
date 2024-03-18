@@ -12,7 +12,8 @@ import com.baeldung.arangodb.model.ArticleEntity;
 import com.baeldung.arangodb.model.Auditable;
 import com.baeldung.arangodb.model.ChangeLogEntity;
 import com.baeldung.arangodb.model.FollowerEntity;
-import com.baeldung.arangodb.model.Relation;
+import com.baeldung.arangodb.model.RelationCL;
+import com.baeldung.arangodb.model.RelationF;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +33,7 @@ public class TraitTest {
 
     @BeforeEach
     void setup() {
-       arangoTemplate.collection("article").truncate();
-       arangoTemplate.collection("change_log").truncate();
-       arangoTemplate.collection("follower").truncate();
+       arangoTemplate.dropDatabase();
     }
 
     @Test
@@ -64,19 +63,19 @@ public class TraitTest {
             DocumentCreateEntity<FollowerEntity> auditableDocumentEntity2 =
                     arangoTemplate.insert(followerEntity, new DocumentCreateOptions().returnNew(true));
 
-            Relation relation = Relation.builder()
+            RelationCL relationCL = RelationCL.builder()
                     .articleEntity(auditableDocumentEntity.getNew())
                     .auditable(auditableDocumentEntity1.getNew())
                     .build();
 
-            Relation relation1 = Relation.builder()
+            RelationF relactionF = RelationF.builder()
                     .articleEntity(auditableDocumentEntity.getNew())
                     .auditable(auditableDocumentEntity2.getNew())
                     .build();
 
-           // arangoTemplate.insert(relation1, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
+           arangoTemplate.insert(relactionF, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
 
-            arangoTemplate.insert(relation, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
+            arangoTemplate.insert(relationCL, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
 
 
             ArticleEntity article1 = arangoTemplate.find(auditableDocumentEntity.getId(), ArticleEntity.class,
@@ -126,19 +125,19 @@ public class TraitTest {
             DocumentCreateEntity<FollowerEntity> auditableDocumentEntity2 =
                     arangoTemplate.insert(followerEntity, new DocumentCreateOptions().returnNew(true));
 
-            Relation relation = Relation.builder()
+            RelationCL relationCL = RelationCL.builder()
                     .articleEntity(auditableDocumentEntity.getNew())
                     .auditable(auditableDocumentEntity1.getNew())
                     .build();
 
-            Relation relation1 = Relation.builder()
+            RelationF relationCL1 = RelationF.builder()
                     .articleEntity(auditableDocumentEntity.getNew())
                     .auditable(auditableDocumentEntity2.getNew())
                     .build();
 
-            arangoTemplate.insert(relation1, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
+            arangoTemplate.insert(relationCL1, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
 
-            arangoTemplate.insert(relation, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
+            arangoTemplate.insert(relationCL, new DocumentCreateOptions().overwriteMode(OverwriteMode.replace));
             
 
             ArticleEntity article1 = arangoTemplate.find(auditableDocumentEntity.getId(), ArticleEntity.class,

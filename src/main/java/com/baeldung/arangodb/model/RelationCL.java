@@ -1,7 +1,6 @@
 package com.baeldung.arangodb.model;
 
 import com.arangodb.springframework.annotation.ArangoId;
-import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Edge;
 import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.Rev;
@@ -19,7 +18,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Relation {
+public class RelationCL implements Auditable {
 
     @Id
     private String key;
@@ -34,6 +33,6 @@ public class Relation {
     private ArticleEntity articleEntity;
 
     @To
-    private Auditable auditable;
+    private ChangeLogEntity auditable;
 
 }
