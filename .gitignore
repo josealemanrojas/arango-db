@@ -1,0 +1,37 @@
+# vim
+*.swp
+*.swn
+*.swo
+*.lst
+*.code-workspace
+*.log
+*.settings
+.project
+
+# folders
+target/*
+.vscode/
+
+# project files
+.env
+**/terraform/.terraform/*
+*.bak
+.factorypath
+
+*.iml
+.idea/
+tmp/
+
+# terraform
+**/.terraform
+
+**/*.tfstate
+**/*.tfstate.*
+**/*.terraform.tfstate
+**/.terraform.lock.hcl
+
+.DS_Store
+/.idea/
+/training-service.ipr
+/training-service.iws
+.java-version
